@@ -3,63 +3,69 @@
 <head>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Be My Valentine ❤️</title>
+<title>For You ❤️</title>
 
 <style>
 
-body {
-    margin:0;
-    font-family: Arial;
-    background: linear-gradient(135deg,#ffccd5,#ffe6f0);
-    overflow:hidden;
-    text-align:center;
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(135deg,#ffd6e0,#ffeaf4);
+overflow:hidden;
+text-align:center;
 }
 
-.container {
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
+.container{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+animation:fadeIn 2s ease;
 }
 
-img {
-    width:280px;
-    border-radius:20px;
-    box-shadow:0 10px 20px rgba(0,0,0,0.2);
+@keyframes fadeIn{
+from{opacity:0;transform:translate(-50%,-40%);}
+to{opacity:1;transform:translate(-50%,-50%);}
 }
 
-h1 {
-    color:#d6336c;
+img{
+width:300px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
 }
 
-button {
-    padding:15px 30px;
-    font-size:22px;
-    border:none;
-    border-radius:12px;
-    margin:10px;
-    cursor:pointer;
-    transition:0.3s;
+h1{
+color:#d6336c;
+font-size:28px;
 }
 
-#yesBtn {
-    background:pink;
+button{
+padding:14px 28px;
+font-size:20px;
+margin:10px;
+border:none;
+border-radius:12px;
+cursor:pointer;
+transition:0.3s;
 }
 
-#noBtn {
-    background:white;
+#yesBtn{
+background:pink;
 }
 
-.heart {
-    position:fixed;
-    font-size:30px;
-    animation:floatUp 3s linear forwards;
+#noBtn{
+background:white;
 }
 
-@keyframes floatUp {
-    from {transform:translateY(0);opacity:1;}
-    to {transform:translateY(-400px);opacity:0;}
+.heart{
+position:fixed;
+font-size:30px;
+animation:floatUp 3s linear forwards;
+}
+
+@keyframes floatUp{
+from{transform:translateY(0);opacity:1;}
+to{transform:translateY(-400px);opacity:0;}
 }
 
 </style>
@@ -72,73 +78,76 @@ button {
 
 <img src="IMG_1132.jpeg">
 
-<h1>Will you be my Valentine? ❤️</h1>
+<h1 id="text"></h1>
 
-<button id="yesBtn">YES</button>
-<button id="noBtn">NO</button>
+<button id="yesBtn">YES ❤️</button>
+<button id="noBtn">NO 😢</button>
 
 </div>
 
 <script>
+
+// TYPEWRITER EFFECT
+const message = "Will you be my Valentine? ❤️";
+let index = 0;
+const textElement = document.getElementById("text");
+
+function typeText(){
+if(index < message.length){
+textElement.innerHTML += message.charAt(index);
+index++;
+setTimeout(typeText,60);
+}
+}
+typeText();
 
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
 
 let scale = 1;
 
+// NO CLICK → YES grows bigger
+noBtn.onclick = () => {
+scale += 0.3;
+yesBtn.style.transform = `scale(${scale})`;
+};
+
+// YES CLICK → MASSIVE HEART CELEBRATION
 yesBtn.onclick = () => {
 
-    for(let i=0;i<50;i++){
-        createHeart();
-    }
-
-    document.body.innerHTML = `
-        <div style="display:flex;justify-content:center;align-items:center;height:100vh;font-size:40px;color:#d6336c;">
-        YAY ❤️❤️❤️
-        </div>
-    `;
+for(let i=0;i<120;i++){
+createHeart();
 }
 
-noBtn.onclick = () => {
-
-    scale += 0.3;
-    yesBtn.style.transform = `scale(${scale})`;
-
-}
-
-document.addEventListener("mousemove", (e)=>{
-
-    const rect = noBtn.getBoundingClientRect();
-
-    const distX = Math.abs(e.clientX - rect.left);
-    const distY = Math.abs(e.clientY - rect.top);
-
-    if(distX < 100 && distY < 100){
-
-        const randX = Math.random()*window.innerWidth;
-        const randY = Math.random()*window.innerHeight;
-
-        noBtn.style.position="absolute";
-        noBtn.style.left = randX + "px";
-        noBtn.style.top = randY + "px";
-    }
-
-});
+document.body.innerHTML = `
+<div style="
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+font-size:42px;
+color:#d6336c;
+animation:fadeIn 1s ease;
+">
+YAY ❤️ YOU SAID YES ❤️
+</div>`;
+};
 
 function createHeart(){
 
-    const heart = document.createElement("div");
-    heart.innerHTML="❤️";
-    heart.className="heart";
+const heart = document.createElement("div");
+heart.innerHTML="❤️";
+heart.className="heart";
 
-    heart.style.left = Math.random()*100+"vw";
-    heart.style.bottom="0";
+heart.style.left=Math.random()*100+"vw";
+heart.style.bottom="-50px";
 
-    document.body.appendChild(heart);
+document.body.appendChild(heart);
 
-    setTimeout(()=>heart.remove(),3000);
+setTimeout(()=>heart.remove(),3000);
 }
 
+// BACKGROUND FLOATING HEARTS
 setInterval(createHeart,800);
 
 </script>
