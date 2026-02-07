@@ -11,21 +11,12 @@ body{
 margin:0;
 font-family:Arial;
 background:linear-gradient(135deg,#ffd6e0,#ffeaf4);
-overflow:hidden;
 text-align:center;
+overflow:hidden;
 }
 
 .container{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-animation:fadeIn 2s ease;
-}
-
-@keyframes fadeIn{
-from{opacity:0;transform:translate(-50%,-40%);}
-to{opacity:1;transform:translate(-50%,-50%);}
+margin-top:60px;
 }
 
 img{
@@ -36,13 +27,12 @@ box-shadow:0 10px 30px rgba(0,0,0,0.2);
 
 h1{
 color:#d6336c;
-font-size:28px;
 }
 
 button{
-padding:14px 28px;
-font-size:20px;
-margin:10px;
+padding:15px 30px;
+font-size:22px;
+margin:15px;
 border:none;
 border-radius:12px;
 cursor:pointer;
@@ -57,15 +47,15 @@ background:pink;
 background:white;
 }
 
-.heart{
+.heart,.confetti{
 position:fixed;
-font-size:30px;
+font-size:25px;
 animation:floatUp 3s linear forwards;
 }
 
 @keyframes floatUp{
 from{transform:translateY(0);opacity:1;}
-to{transform:translateY(-400px);opacity:0;}
+to{transform:translateY(-500px);opacity:0;}
 }
 
 </style>
@@ -78,77 +68,64 @@ to{transform:translateY(-400px);opacity:0;}
 
 <img src="IMG_1132.jpeg">
 
-<h1 id="text"></h1>
+<h1>Will you be my Valentine? ❤️</h1>
 
 <button id="yesBtn">YES ❤️</button>
-<button id="noBtn">NO 😢</button>
+<button id="noBtn">CLICK YES 😢</button>
 
 </div>
 
 <script>
-
-// TYPEWRITER EFFECT
-const message = "Will you be my Valentine? ❤️";
-let index = 0;
-const textElement = document.getElementById("text");
-
-function typeText(){
-if(index < message.length){
-textElement.innerHTML += message.charAt(index);
-index++;
-setTimeout(typeText,60);
-}
-}
-typeText();
 
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
 
 let scale = 1;
 
-// NO CLICK → YES grows bigger
+// NO CLICK
 noBtn.onclick = () => {
 scale += 0.3;
 yesBtn.style.transform = `scale(${scale})`;
 };
 
-// YES CLICK → MASSIVE HEART CELEBRATION
+// YES CLICK — MASSIVE CELEBRATION
 yesBtn.onclick = () => {
 
-for(let i=0;i<120;i++){
+document.body.innerHTML = `
+<div style="display:flex;justify-content:center;align-items:center;height:100vh;font-size:42px;color:#d6336c;">
+I LOVE YOU SHONA MOINA ❤️❤️❤️
+</div>
+`;
+
+for(let i=0;i<200;i++){
 createHeart();
+createConfetti();
 }
 
-document.body.innerHTML = `
-<div style="
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-font-size:42px;
-color:#d6336c;
-animation:fadeIn 1s ease;
-">
-YAY ❤️ YOU SAID YES ❤️
-</div>`;
 };
 
+// HEARTS
 function createHeart(){
-
-const heart = document.createElement("div");
+const heart=document.createElement("div");
 heart.innerHTML="❤️";
 heart.className="heart";
-
 heart.style.left=Math.random()*100+"vw";
 heart.style.bottom="-50px";
-
 document.body.appendChild(heart);
-
 setTimeout(()=>heart.remove(),3000);
 }
 
-// BACKGROUND FLOATING HEARTS
-setInterval(createHeart,800);
+// CONFETTI + FIREWORK STYLE
+function createConfetti(){
+const confetti=document.createElement("div");
+const emojis=["🎉","✨","💖","💥","🎊"];
+confetti.innerHTML=emojis[Math.floor(Math.random()*emojis.length)];
+confetti.className="confetti";
+confetti.style.left=Math.random()*100+"vw";
+confetti.style.bottom="-50px";
+document.body.appendChild(confetti);
+setTimeout(()=>confetti.remove(),3000);
+}
 
 </script>
 
