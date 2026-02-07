@@ -1,80 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For You ❤️</title>
-
-<style>
-
-body{
-margin:0;
-font-family:Arial;
-background:linear-gradient(135deg,#ffd6e0,#ffeaf4);
-text-align:center;
-overflow:hidden;
-}
-
-.container{
-margin-top:60px;
-}
-
-img{
-width:300px;
-border-radius:20px;
-box-shadow:0 10px 30px rgba(0,0,0,0.2);
-}
-
-h1{
-color:#d6336c;
-}
-
-button{
-padding:15px 30px;
-font-size:22px;
-margin:15px;
-border:none;
-border-radius:12px;
-cursor:pointer;
-transition:0.3s;
-}
-
-#yesBtn{background:pink;}
-#noBtn{background:white;}
-
-.heart,.confetti{
-position:fixed;
-font-size:28px;
-animation:floatUp 3s linear forwards;
-}
-
-@keyframes floatUp{
-from{transform:translateY(0);opacity:1;}
-to{transform:translateY(-600px);opacity:0;}
-}
-
-</style>
-
-</head>
-
-<body>
-
-<div class="container">
-
-<img src="IMG_1132.jpeg">
-
-<h1>Will you be my Valentine? ❤️</h1>
-
-<button id="yesBtn">YES ❤️</button>
-<button id="noBtn">CLICK YES 😢</button>
-
-</div>
-
-<!-- AUDIO PLAYER -->
-<audio id="loveSong" preload="auto">
-<source src="song.mp3" type="audio/mpeg">
-</audio>
-
 <script>
 
 const yesBtn = document.getElementById("yesBtn");
@@ -83,82 +6,87 @@ const music = document.getElementById("loveSong");
 
 let scale = 1;
 
-// NO CLICK → YES grows bigger
+// NO CLICK → YES grows
 noBtn.addEventListener("click",()=>{
-scale += 0.3;
-yesBtn.style.transform = `scale(${scale})`;
+    scale += 0.3;
+    yesBtn.style.transform = `scale(${scale})`;
 });
 
-// YES CLICK → PLAY MUSIC + CELEBRATION
-yesBtn.addEventListener("click",()=>{
+// YES CLICK
+yesBtn.addEventListener("click", function(){
 
-// PLAY MUSIC
-music.currentTime = 0;
-music.volume = 1;
-music.play().catch(()=>{});
+    // FORCE PLAY AUDIO (strong browser-compatible method)
+    music.pause();
+    music.currentTime = 0;
+    music.muted = false;
+    music.volume = 1;
 
-// HIDE ORIGINAL CONTENT (DO NOT DELETE PAGE)
-document.querySelector(".container").style.display="none";
+    const playPromise = music.play();
 
-// SHOW LOVE MESSAGE
-const message = document.createElement("div");
-message.innerHTML = "I LOVE YOU SHONA MOINA ❤️❤️❤️";
-message.style.cssText = `
-position:fixed;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-font-size:42px;
-color:#d6336c;
-text-align:center;
-`;
-document.body.appendChild(message);
+    if(playPromise !== undefined){
+        playPromise.then(()=> {
+            console.log("Music playing");
+        }).catch(err => {
+            console.log("Playback failed:", err);
+        });
+    }
 
-// MASSIVE CELEBRATION
-for(let i=0;i<300;i++){
-createHeart();
-createConfetti();
-createFirework();
-}
+    // Hide original container (DO NOT delete page)
+    document.querySelector(".container").style.display = "none";
+
+    // Show love message
+    const message = document.createElement("div");
+    message.innerHTML = "I LOVE YOU SHONA MOINA ❤️❤️❤️";
+    message.style.cssText = `
+        position:fixed;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%);
+        font-size:42px;
+        color:#d6336c;
+        text-align:center;
+    `;
+    document.body.appendChild(message);
+
+    // Celebration
+    for(let i=0;i<300;i++){
+        createHeart();
+        createConfetti();
+        createFirework();
+    }
 
 });
 
-// HEARTS
 function createHeart(){
-const heart=document.createElement("div");
-heart.innerHTML="❤️";
-heart.className="heart";
-heart.style.left=Math.random()*100+"vw";
-heart.style.bottom="-50px";
-document.body.appendChild(heart);
-setTimeout(()=>heart.remove(),3000);
+    const heart=document.createElement("div");
+    heart.innerHTML="❤️";
+    heart.className="heart";
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.bottom="-50px";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),3000);
 }
 
-// CONFETTI
 function createConfetti(){
-const confetti=document.createElement("div");
-const emojis=["🎉","✨","💖","🎊"];
-confetti.innerHTML=emojis[Math.floor(Math.random()*emojis.length)];
-confetti.className="confetti";
-confetti.style.left=Math.random()*100+"vw";
-confetti.style.bottom="-50px";
-document.body.appendChild(confetti);
-setTimeout(()=>confetti.remove(),3000);
+    const confetti=document.createElement("div");
+    const emojis=["🎉","✨","💖","🎊"];
+    confetti.innerHTML=emojis[Math.floor(Math.random()*emojis.length)];
+    confetti.className="confetti";
+    confetti.style.left=Math.random()*100+"vw";
+    confetti.style.bottom="-50px";
+    document.body.appendChild(confetti);
+    setTimeout(()=>confetti.remove(),3000);
 }
 
-// FIREWORKS
 function createFirework(){
-const fire=document.createElement("div");
-const fireworks=["💥","🌟","🎆"];
-fire.innerHTML=fireworks[Math.floor(Math.random()*fireworks.length)];
-fire.className="confetti";
-fire.style.left=Math.random()*100+"vw";
-fire.style.bottom="-50px";
-document.body.appendChild(fire);
-setTimeout(()=>fire.remove(),3000);
+    const fire=document.createElement("div");
+    const fireworks=["💥","🌟","🎆"];
+    fire.innerHTML=fireworks[Math.floor(Math.random()*fireworks.length)];
+    fire.className="confetti";
+    fire.style.left=Math.random()*100+"vw";
+    fire.style.bottom="-50px";
+    document.body.appendChild(fire);
+    setTimeout(()=>fire.remove(),3000);
 }
 
 </script>
-
-</body>
-</html>
