@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Be My Valentine ❤️</title>
+
+<style>
+
+body {
+    margin:0;
+    font-family: Arial;
+    background: linear-gradient(135deg,#ffccd5,#ffe6f0);
+    overflow:hidden;
+    text-align:center;
+}
+
+.container {
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+}
+
+img {
+    width:280px;
+    border-radius:20px;
+    box-shadow:0 10px 20px rgba(0,0,0,0.2);
+}
+
+h1 {
+    color:#d6336c;
+}
+
+button {
+    padding:15px 30px;
+    font-size:22px;
+    border:none;
+    border-radius:12px;
+    margin:10px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+#yesBtn {
+    background:pink;
+}
+
+#noBtn {
+    background:white;
+}
+
+.heart {
+    position:fixed;
+    font-size:30px;
+    animation:floatUp 3s linear forwards;
+}
+
+@keyframes floatUp {
+    from {transform:translateY(0);opacity:1;}
+    to {transform:translateY(-400px);opacity:0;}
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<img src="IMG_1132.jpeg">
+
+<h1>Will you be my Valentine? ❤️</h1>
+
+<button id="yesBtn">YES</button>
+<button id="noBtn">NO</button>
+
+</div>
+
+<script>
+
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+
+let scale = 1;
+
+yesBtn.onclick = () => {
+
+    for(let i=0;i<50;i++){
+        createHeart();
+    }
+
+    document.body.innerHTML = `
+        <div style="display:flex;justify-content:center;align-items:center;height:100vh;font-size:40px;color:#d6336c;">
+        YAY ❤️❤️❤️
+        </div>
+    `;
+}
+
+noBtn.onclick = () => {
+
+    scale += 0.3;
+    yesBtn.style.transform = `scale(${scale})`;
+
+}
+
+document.addEventListener("mousemove", (e)=>{
+
+    const rect = noBtn.getBoundingClientRect();
+
+    const distX = Math.abs(e.clientX - rect.left);
+    const distY = Math.abs(e.clientY - rect.top);
+
+    if(distX < 100 && distY < 100){
+
+        const randX = Math.random()*window.innerWidth;
+        const randY = Math.random()*window.innerHeight;
+
+        noBtn.style.position="absolute";
+        noBtn.style.left = randX + "px";
+        noBtn.style.top = randY + "px";
+    }
+
+});
+
+function createHeart(){
+
+    const heart = document.createElement("div");
+    heart.innerHTML="❤️";
+    heart.className="heart";
+
+    heart.style.left = Math.random()*100+"vw";
+    heart.style.bottom="0";
+
+    document.body.appendChild(heart);
+
+    setTimeout(()=>heart.remove(),3000);
+}
+
+setInterval(createHeart,800);
+
+</script>
+
+</body>
+</html>
