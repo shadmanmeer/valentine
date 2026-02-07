@@ -10,8 +10,9 @@
 body{
 margin:0;
 font-family:Arial;
-background:#ffeaf4;
+background:linear-gradient(135deg,#ffd6e0,#ffeaf4);
 text-align:center;
+overflow:hidden;
 }
 
 .container{
@@ -21,13 +22,35 @@ margin-top:60px;
 img{
 width:300px;
 border-radius:20px;
+box-shadow:0 10px 20px rgba(0,0,0,0.2);
+}
+
+h1{
+color:#d6336c;
 }
 
 button{
 padding:15px 30px;
 font-size:22px;
-margin:10px;
+margin:15px;
+border:none;
+border-radius:12px;
 cursor:pointer;
+transition:0.3s;
+}
+
+#yesBtn{background:pink;}
+#noBtn{background:white;}
+
+.heart{
+position:fixed;
+font-size:30px;
+animation:floatUp 3s linear forwards;
+}
+
+@keyframes floatUp{
+from{transform:translateY(0);opacity:1;}
+to{transform:translateY(-400px);opacity:0;}
 }
 
 </style>
@@ -43,10 +66,11 @@ cursor:pointer;
 <h1>Will you be my Valentine? ❤️</h1>
 
 <button id="yesBtn">YES ❤️</button>
-<button id="noBtn">CLICK YES 😢</button>
+<button id="noBtn">NO 😢</button>
 
 </div>
 
+<!-- AUDIO PLAYER -->
 <audio id="loveSong">
 <source src="song.mp3" type="audio/mpeg">
 </audio>
@@ -59,19 +83,37 @@ const music = document.getElementById("loveSong");
 
 let scale = 1;
 
+// NO CLICK → YES grows
 noBtn.onclick = function(){
 scale += 0.3;
 yesBtn.style.transform = "scale("+scale+")";
 };
 
+// YES CLICK → PLAY MUSIC + HEARTS
 yesBtn.onclick = function(){
 
-music.play();
+// PLAY MUSIC (SAFE METHOD)
+music.currentTime = 0;
+music.play().catch(()=>{});
 
-document.querySelector(".container").innerHTML = 
-"<h1>I LOVE YOU SHONA MOINA ❤️❤️❤️</h1>";
+document.querySelector(".container").innerHTML =
+"<h1 style='color:#d6336c;'>I LOVE YOU SHONA MOINA ❤️❤️❤️</h1>";
+
+for(let i=0;i<120;i++){
+createHeart();
+}
 
 };
+
+function createHeart(){
+const heart=document.createElement("div");
+heart.innerHTML="❤️";
+heart.className="heart";
+heart.style.left=Math.random()*100+"vw";
+heart.style.bottom="0";
+document.body.appendChild(heart);
+setTimeout(()=>heart.remove(),3000);
+}
 
 </script>
 
