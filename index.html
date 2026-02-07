@@ -66,11 +66,11 @@ to{transform:translateY(-600px);opacity:0;}
 <h1>Will you be my Valentine? ❤️</h1>
 
 <button id="yesBtn">YES ❤️</button>
-<button id="noBtn">CLICK YES 😢</button>
+<button id="noBtn">NO 😢</button>
 
 </div>
 
-<!-- AUDIO -->
+<!-- AUDIO PLAYER -->
 <audio id="loveSong" preload="auto">
 <source src="song.mp3" type="audio/mpeg">
 </audio>
@@ -83,36 +83,38 @@ const music = document.getElementById("loveSong");
 
 let scale = 1;
 
-// NO CLICK → YES grows
+// NO CLICK → YES grows bigger
 noBtn.addEventListener("click",()=>{
 scale += 0.3;
-yesBtn.style.transform=`scale(${scale})`;
+yesBtn.style.transform = `scale(${scale})`;
 });
 
 // YES CLICK → PLAY MUSIC + CELEBRATION
 yesBtn.addEventListener("click",()=>{
 
-// SAFEST WAY TO PLAY AUDIO
-music.volume = 1;
+// PLAY MUSIC
 music.currentTime = 0;
+music.volume = 1;
+music.play().catch(()=>{});
 
-let playPromise = music.play();
-if(playPromise !== undefined){
-playPromise.catch(()=>{});
-}
+// HIDE ORIGINAL CONTENT (DO NOT DELETE PAGE)
+document.querySelector(".container").style.display="none";
 
-document.body.innerHTML=`
-<div style="
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
+// SHOW LOVE MESSAGE
+const message = document.createElement("div");
+message.innerHTML = "I LOVE YOU SHONA MOINA ❤️❤️❤️";
+message.style.cssText = `
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
 font-size:42px;
-color:#d6336c;">
-I LOVE YOU SHONA MOINA ❤️❤️❤️
-</div>
+color:#d6336c;
+text-align:center;
 `;
+document.body.appendChild(message);
 
+// MASSIVE CELEBRATION
 for(let i=0;i<300;i++){
 createHeart();
 createConfetti();
@@ -121,6 +123,7 @@ createFirework();
 
 });
 
+// HEARTS
 function createHeart(){
 const heart=document.createElement("div");
 heart.innerHTML="❤️";
@@ -131,6 +134,7 @@ document.body.appendChild(heart);
 setTimeout(()=>heart.remove(),3000);
 }
 
+// CONFETTI
 function createConfetti(){
 const confetti=document.createElement("div");
 const emojis=["🎉","✨","💖","🎊"];
@@ -142,6 +146,7 @@ document.body.appendChild(confetti);
 setTimeout(()=>confetti.remove(),3000);
 }
 
+// FIREWORKS
 function createFirework(){
 const fire=document.createElement("div");
 const fireworks=["💥","🌟","🎆"];
