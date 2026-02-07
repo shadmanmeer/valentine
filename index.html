@@ -17,12 +17,6 @@ overflow:hidden;
 
 .container{
 margin-top:60px;
-animation:fadeIn 2s ease;
-}
-
-@keyframes fadeIn{
-from{opacity:0;}
-to{opacity:1;}
 }
 
 img{
@@ -33,7 +27,6 @@ box-shadow:0 10px 30px rgba(0,0,0,0.2);
 
 h1{
 color:#d6336c;
-font-size:30px;
 }
 
 button{
@@ -46,13 +39,8 @@ cursor:pointer;
 transition:0.3s;
 }
 
-#yesBtn{
-background:pink;
-}
-
-#noBtn{
-background:white;
-}
+#yesBtn{background:pink;}
+#noBtn{background:white;}
 
 .heart,.confetti{
 position:fixed;
@@ -78,55 +66,61 @@ to{transform:translateY(-600px);opacity:0;}
 <h1>Will you be my Valentine? ❤️</h1>
 
 <button id="yesBtn">YES ❤️</button>
-<button id="noBtn">CLICK YES PLEASE 😢</button>
+<button id="noBtn">CLICK YES 😢</button>
 
 </div>
 
-<!-- MUSIC -->
-<audio id="loveSong" src="song.mp3"></audio>
+<!-- AUDIO -->
+<audio id="loveSong" preload="auto">
+<source src="song.mp3" type="audio/mpeg">
+</audio>
 
 <script>
 
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
+const music = document.getElementById("loveSong");
 
 let scale = 1;
 
-// NO CLICK → YES grows bigger
-noBtn.onclick = () => {
+// NO CLICK → YES grows
+noBtn.addEventListener("click",()=>{
 scale += 0.3;
-yesBtn.style.transform = `scale(${scale})`;
-};
+yesBtn.style.transform=`scale(${scale})`;
+});
 
-// YES CLICK → FULL CELEBRATION
-yesBtn.onclick = () => {
+// YES CLICK → PLAY MUSIC + CELEBRATION
+yesBtn.addEventListener("click",()=>{
 
-document.getElementById("loveSong").play();
+// SAFEST WAY TO PLAY AUDIO
+music.volume = 1;
+music.currentTime = 0;
 
-document.body.innerHTML = `
+let playPromise = music.play();
+if(playPromise !== undefined){
+playPromise.catch(()=>{});
+}
+
+document.body.innerHTML=`
 <div style="
 display:flex;
 justify-content:center;
 align-items:center;
 height:100vh;
 font-size:42px;
-color:#d6336c;
-text-align:center;
-animation:fadeIn 2s ease;
-">
+color:#d6336c;">
 I LOVE YOU SHONA MOINA ❤️❤️❤️
 </div>
 `;
 
-for(let i=0;i<250;i++){
+for(let i=0;i<300;i++){
 createHeart();
 createConfetti();
 createFirework();
 }
 
-};
+});
 
-// HEARTS
 function createHeart(){
 const heart=document.createElement("div");
 heart.innerHTML="❤️";
@@ -137,7 +131,6 @@ document.body.appendChild(heart);
 setTimeout(()=>heart.remove(),3000);
 }
 
-// CONFETTI
 function createConfetti(){
 const confetti=document.createElement("div");
 const emojis=["🎉","✨","💖","🎊"];
@@ -149,10 +142,9 @@ document.body.appendChild(confetti);
 setTimeout(()=>confetti.remove(),3000);
 }
 
-// FIREWORKS
 function createFirework(){
 const fire=document.createElement("div");
-const fireworks=["💥","🌟","✨","🎆"];
+const fireworks=["💥","🌟","🎆"];
 fire.innerHTML=fireworks[Math.floor(Math.random()*fireworks.length)];
 fire.className="confetti";
 fire.style.left=Math.random()*100+"vw";
