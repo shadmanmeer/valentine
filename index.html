@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For You ❤️</title>
 
@@ -15,101 +14,74 @@ text-align:center;
 overflow:hidden;
 }
 
-.container{
-margin-top:60px;
-}
-
+/* image */
 img{
 width:300px;
+margin-top:40px;
 border-radius:20px;
-box-shadow:0 10px 20px rgba(0,0,0,0.2);
 }
 
+/* text */
 h1{
 color:#d6336c;
-min-height:60px;
+min-height:80px;
 }
 
-/* HEART SHAPE BUTTONS */
+/* HEART SHAPED BUTTON */
 .heartBtn{
 width:120px;
-height:120px;
+height:110px;
 background:pink;
-position:relative;
 display:inline-flex;
 justify-content:center;
 align-items:center;
+margin:20px;
 color:white;
 font-size:18px;
-border:none;
 cursor:pointer;
-margin:20px;
-transform:rotate(-45deg);
-}
-
-.heartBtn span{
-transform:rotate(45deg);
-}
-
-.heartBtn:before,
-.heartBtn:after{
-content:"";
-width:120px;
-height:120px;
-background:inherit;
-border-radius:50%;
-position:absolute;
-}
-
-.heartBtn:before{
-top:-60px;
-left:0;
-}
-
-.heartBtn:after{
-left:60px;
-top:0;
+position:relative;
+clip-path: polygon(50% 0%, 100% 35%, 82% 100%, 50% 80%, 18% 100%, 0% 35%);
 }
 
 /* HEARTBEAT ANIMATION */
-@keyframes heartbeat{
-0%{transform:rotate(-45deg) scale(1);}
-50%{transform:rotate(-45deg) scale(1.1);}
-100%{transform:rotate(-45deg) scale(1);}
+@keyframes beat{
+0%{transform:scale(1);}
+50%{transform:scale(1.15);}
+100%{transform:scale(1);}
 }
 
 #yesBtn{
-animation:heartbeat 1.2s infinite;
+animation:beat 1s infinite;
+background:#ff5c8a;
 }
 
-/* floating hearts */
-.heart{
+#noBtn{
+background:#ff9aa2;
+}
+
+/* floating petals */
+.petal{
 position:fixed;
-font-size:30px;
-animation:floatUp 3s linear forwards;
+font-size:24px;
+animation:fall 4s linear forwards;
 }
 
-@keyframes floatUp{
-from{transform:translateY(0);opacity:1;}
-to{transform:translateY(-400px);opacity:0;}
+@keyframes fall{
+from{transform:translateY(-20px);opacity:1;}
+to{transform:translateY(100vh);opacity:0;}
 }
 
 </style>
-
 </head>
 
 <body>
 
-<div class="container">
-
 <img src="IMG_1132.jpeg">
 
-<h1 id="loveText"></h1>
+<h1 id="text"></h1>
 
-<button id="yesBtn" class="heartBtn"><span>YES ❤️</span></button>
-<button id="noBtn" class="heartBtn" style="background:#ff9aa2;"><span>NO 😢</span></button>
-
-</div>
+<div id="yesBtn" class="heartBtn">YES ❤️</div>
+<div id="noBtn" class="heartBtn">CLICK YES 😢</div>
 
 <audio id="loveSong">
 <source src="song.mp3" type="audio/mpeg">
@@ -117,57 +89,50 @@ to{transform:translateY(-400px);opacity:0;}
 
 <script>
 
-// ROMANTIC TYPEWRITER
-const message = "I made something special for you... Every moment with you means everything to me... Will you be my Valentine? ❤️";
-let index = 0;
-const textElement = document.getElementById("loveText");
-
-function typeText(){
-if(index < message.length){
-textElement.innerHTML += message.charAt(index);
-index++;
-setTimeout(typeText,50);
-}
+/* CHERRY BLOSSOM PETALS */
+function createPetal(){
+const petal=document.createElement("div");
+petal.innerHTML="🌸";
+petal.className="petal";
+petal.style.left=Math.random()*100+"vw";
+document.body.appendChild(petal);
+setTimeout(()=>petal.remove(),4000);
 }
 
-typeText();
+setInterval(createPetal,400);
 
-const yesBtn = document.getElementById("yesBtn");
-const noBtn = document.getElementById("noBtn");
-const music = document.getElementById("loveSong");
+/* ROMANTIC TYPEWRITER */
+const message="I made something special for you... Every moment with you feels magical... Will you be my Valentine? ❤️";
+let i=0;
+function type(){
+if(i<message.length){
+document.getElementById("text").innerHTML+=message.charAt(i);
+i++;
+setTimeout(type,60);
+}
+}
+type();
 
-let scale = 1;
+/* BUTTON LOGIC */
+const yes=document.getElementById("yesBtn");
+const no=document.getElementById("noBtn");
+const music=document.getElementById("loveSong");
 
-// NO CLICK → YES grows
-noBtn.onclick=function(){
-scale += 0.2;
-yesBtn.style.transform="rotate(-45deg) scale("+scale+")";
+let scale=1;
+
+no.onclick=function(){
+scale+=0.2;
+yes.style.transform="scale("+scale+")";
 };
 
-// YES CLICK
-yesBtn.onclick=function(){
+yes.onclick=function(){
 
 music.currentTime=0;
 music.play().catch(()=>{});
 
-document.querySelector(".container").innerHTML =
-"<h1 style='color:#d6336c;'>I LOVE YOU SHONA MOINA ❤️❤️❤️</h1>";
-
-for(let i=0;i<200;i++){
-createHeart();
-}
+document.body.innerHTML="<h1 style='color:#d6336c;margin-top:40vh;'>I LOVE YOU SHONA MOINA ❤️❤️❤️</h1>";
 
 };
-
-function createHeart(){
-const heart=document.createElement("div");
-heart.innerHTML="❤️";
-heart.className="heart";
-heart.style.left=Math.random()*100+"vw";
-heart.style.bottom="0";
-document.body.appendChild(heart);
-setTimeout(()=>heart.remove(),3000);
-}
 
 </script>
 
